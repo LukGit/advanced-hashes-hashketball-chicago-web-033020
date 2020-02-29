@@ -111,17 +111,20 @@ def build_hash(type)
     player_ah.concat(team[:players])
   end
   pt_hash = {}
+  # take each player hash in the array and convert it into a hash with player name as the key and the incoming type as the value. The entire hash is them return to caller for examination
   pt_hash = player_ah.to_h {|k| [k[:player_name], k[type]]}
   pt_hash
 end
 
 def num_points_scored(name)
+  # call build_hash to build a hash with player name as key and points as value. This can then be looked up using parm name
   retrun_hash = build_hash(:points)
   point_s = retrun_hash[name]
   point_s
 end
 
 def shoe_size(name)
+  # call build_hash to build a hash with player name as key and shoe size as value. This can then be looked up using parm name
   retrun_hash = build_hash(:shoe)
   ssize = retrun_hash[name]
   ssize
@@ -210,7 +213,8 @@ def big_shoe_rebounds
   maxpt
 end
 
-def most_points_scored
+def most_stat(type)
+  # return name of player with the most of any stat type from calling method
   player_s = []
   hash5 = game_hash
   hash5.each do |h_w, team|
@@ -220,13 +224,19 @@ def most_points_scored
   maxplayer = ""
   i = 0 
   while i < player_s.size do
-    if maxpt < player_s[i][:points]
+    if maxpt < player_s[i][type]
       maxplayer = player_s[i][:player_name]
-      maxpt = player_s[i][:points]
+      maxpt = player_s[i][type]
     end
     i += 1
   end
   maxplayer
+end
+
+def most_points_scored
+  # call most_stat to return most points player
+  the_player = most_stat(:points)
+  the_player
 end
 
 def winning_team 
@@ -234,13 +244,10 @@ def winning_team
  record = []
   hash5 = game_hash
   hash5.each do |h_w, team|
-    i = 0 
     tot = 0
     record << team[:team_name]
-    while i < team[:players].size do
-      tot += team[:players][i][:points]
-      i += 1
-    end
+    # use .sum to total up points for each player in the array team[:players]
+    tot = team[:players].sum {|x| x[:points]}
     record << tot
     teams << record
   end
@@ -267,30 +274,19 @@ def player_with_longest_name
       i += 1
     end
   end
-  maxname = names.max {|a,b| a.length <=> b.length}
+  # use .max_by to find the max length of each array entry
+  maxname = names.max_by {|a| a.length}
   maxname
 end
 
 def most_steals
-  player_s = []
-  hash5 = game_hash
-  hash5.each do |h_w, team|
-    player_s.concat(team[:players])
-  end
-  maxpt = 0 
-  maxplayer = ""
-  i = 0 
-  while i < player_s.size do
-    if maxpt < player_s[i][:steals]
-      maxplayer = player_s[i][:player_name]
-      maxpt = player_s[i][:steals]
-    end
-    i += 1
-  end
-  maxplayer
+  # call most_stat to return most steals player
+  the_player = most_stat(:steals)
+  the_player
 end
 
 def long_name_steals_a_ton?
+  # call most_steals to find the name to compare to the name retrun by player_with_longest_name
   if most_steals = player_with_longest_name
     return true 
   else
