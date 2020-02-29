@@ -104,39 +104,26 @@ def game_hash
   hash
 end
 
-def num_points_scored(name)
+def build_hash(type)
   player_ah = []
   hash1 = game_hash
   hash1.each do |h_w, team|
     player_ah.concat(team[:players])
   end
   pt_hash = {}
-  i = 0 
-  while i < player_ah.size do
-    pname = player_ah[i][:player_name]
-    points = player_ah[i][:points]
-    pt_hash[pname] = points
-    i += 1
-  end
-  point_s = pt_hash[name]
+  pt_hash = player_ah.to_h {|k| [k[:player_name], k[type]]}
+  pt_hash
+end
+
+def num_points_scored(name)
+  retrun_hash = build_hash(:points)
+  point_s = retrun_hash[name]
   point_s
 end
 
 def shoe_size(name)
-  player_ah1 = []
-  hash2 = game_hash
-  hash2.each do |h_w, team|
-    player_ah1.concat(team[:players])
-  end
-  pt_hash1 = {}
-  i = 0 
-  while i < player_ah1.size do
-    pname = player_ah1[i][:player_name]
-    shoe = player_ah1[i][:shoe]
-    pt_hash1[pname] = shoe
-    i += 1
-  end
-  ssize = pt_hash1[name]
+  retrun_hash = build_hash(:shoe)
+  ssize = retrun_hash[name]
   ssize
 end
 
