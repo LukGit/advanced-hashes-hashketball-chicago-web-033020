@@ -151,19 +151,13 @@ end
 
 def player_numbers(tname)
   player_num = []
-  n_hash = {}
   hash2 = game_hash
   hash2.each do |h_w, team|
-    player_num = (team[:players])
-    n_hash[team[:team_name]] = player_num
+    if team[:team_name] == tname
+      player_num = team[:players]
+    end
   end
-  p_num = n_hash[tname]
-  outnum = []
-  i = 0 
-  while i < p_num.size do
-    outnum << p_num[i][:number]
-    i += 1
-  end
+  outnum = player_num.map{|h| h[:number]}
   outnum
 end
 
