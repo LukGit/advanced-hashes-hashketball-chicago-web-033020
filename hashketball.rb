@@ -110,7 +110,6 @@ def build_hash(type)
   hash1.each do |h_w, team|
     player_ah.concat(team[:players])
   end
-  pt_hash = {}
   # take each player hash in the array and convert it into a hash with player name as the key and the incoming type as the value. The entire hash is them return to caller for examination
   pt_hash = player_ah.to_h {|k| [k[:player_name], k[type]]}
   pt_hash
@@ -118,15 +117,13 @@ end
 
 def num_points_scored(name)
   # call build_hash to build a hash with player name as key and points as value. This can then be looked up using parm name
-  retrun_hash = build_hash(:points)
-  point_s = retrun_hash[name]
+  point_s = build_hash(:points)[name]
   point_s
 end
 
 def shoe_size(name)
   # call build_hash to build a hash with player name as key and shoe size as value. This can then be looked up using parm name
-  retrun_hash = build_hash(:shoe)
-  ssize = retrun_hash[name]
+  ssize = build_hash(:shoe)[name]
   ssize
 end
 
@@ -189,41 +186,21 @@ def player_stats(name)
 end
 
 def big_shoe_rebounds
-  player_s = []
-  hash5 = game_hash
-  hash5.each do |h_w, team|
-    player_s.concat(team[:players])
-  end
-  maxpt = 0 
-  maxshoe = 0
-  i = 0 
-  while i < player_s.size do
-    if maxshoe < player_s[i][:shoe]
-      maxshoe = player_s[i][:shoe]
-      maxpt = player_s[i][:rebounds]
-    end
-    i += 1
-  end
+  # call most_stat to get the player name with the biggest shoe size most_stat(:shoe)
+  # call build_hash to get all players and their rebounds build_hash(:rebounds)
+  # look for the matching player in the hash and get the value 
+  maxpt = build_hash(:rebounds)[most_stat(:shoe)]
   maxpt
 end
 
 def most_stat(type)
-  # return name of player with the most of any stat type from calling method
-  player_s = []
-  hash5 = game_hash
-  hash5.each do |h_w, team|
-    player_s.concat(team[:players])
-  end
-  maxpt = 0 
-  maxplayer = ""
-  i = 0 
-  while i < player_s.size do
-    if maxpt < player_s[i][type]
-      maxplayer = player_s[i][:player_name]
-      maxpt = player_s[i][type]
-    end
-    i += 1
-  end
+  # return name of player with the most of any stat type from calling method. This calls the build_hash method to get the player_name as the key and the stat as the value
+  # then convert the hash into array 
+  arr = build_hash(type).to_a
+  # use .max to compare the value at index 1, which is the stat value
+  result = arr.max{|h,k| h[1] <=> k[1]}
+  # return the name in index 0
+  maxplayer = result[0]
   maxplayer
 end
 
@@ -235,26 +212,19 @@ end
 
 def winning_team 
  teams = []
- record = []
   hash5 = game_hash
   hash5.each do |h_w, team|
     tot = 0
+    record = []
     record << team[:team_name]
-    # use .sum to total up points for each player in the array team[:players]
+    # use .sum to total up points for each player in the array team[:players]. The result is an array with the team name and points in an array where index 0 is the name and index 1 is the total points
     tot = team[:players].sum {|x| x[:points]}
     record << tot
     teams << record
   end
-  i = 0 
-  maxteam = ""
-  maxpt = 0 
-  while i < teams.size do
-    if maxpt < teams[i][1]
-      maxpt = teams[i][1]
-      maxteam = teams[i][0]
-    end
-    i += 1
-  end
+  # use .max to get the array entry where index 1 has the highest value
+  resultx = teams.max{|h,k| h[1] <=> k[1]}
+  maxteam = resultx[0]
   maxteam
 end
 
