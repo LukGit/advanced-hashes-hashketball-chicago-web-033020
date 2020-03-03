@@ -116,14 +116,14 @@ def build_hash(type)
 end
 
 def num_points_scored(name)
-  # call build_hash to build a hash with player name as key and points as value. This can then be looked up using parm name
-  point_s = build_hash(:points)[name]
+  # call player_stats to get the stat of the player. Then find the stat type (points)
+  point_s = player_stats(name)[:points]
   point_s
 end
 
 def shoe_size(name)
-  # call build_hash to build a hash with player name as key and shoe size as value. This can then be looked up using parm name
-  ssize = build_hash(:shoe)[name]
+  # call player_stats to get the stat of the player. Then find the stat type (shoe)
+  ssize = player_stats(name)[:shoe]
   ssize
 end
 
