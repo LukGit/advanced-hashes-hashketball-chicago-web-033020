@@ -165,24 +165,11 @@ def player_stats(name)
   hash4.each do |h_w, team|
     stat.concat(team[:players])
   end
-  i = 0 
-  hash_temp = {}
-  new_hash = {}
-  while i < stat.size do
-    pname = stat[i][:player_name]
-    hash_temp = {:number => stat[i][:number],
-    :shoe => stat[i][:shoe],
-    :points => stat[i][:points],
-    :rebounds => stat[i][:rebounds],
-    :assists => stat[i][:assists],
-    :steals => stat[i][:steals],
-    :blocks => stat[i][:blocks],
-    :slam_dunks => stat[i][:slam_dunks]}
-    new_hash[pname] = hash_temp
-    i += 1
-  end
-  out_hash = new_hash[name]
-  out_hash
+  # use .find to look for the matching name and return the hash with the play_name as the first hash key/value pair
+  new_hash = stat.find {|x| x[:player_name] == name}
+  # remove the first pair at the front and the rest of the hashes are returned. 
+  namex = new_hash.shift
+  new_hash
 end
 
 def big_shoe_rebounds
