@@ -112,19 +112,16 @@ def build_hash(type)
   end
   # take each player hash in the array and convert it into a hash with player name as the key and the incoming type as the value. The entire hash is them return to caller for examination
   pt_hash = player_ah.to_h {|k| [k[:player_name], k[type]]}
-  pt_hash
 end
 
 def num_points_scored(name)
   # call player_stats to get the stat of the player. Then find the stat type (points)
   point_s = player_stats(name)[:points]
-  point_s
 end
 
 def shoe_size(name)
   # call player_stats to get the stat of the player. Then find the stat type (shoe)
   ssize = player_stats(name)[:shoe]
-  ssize
 end
 
 def team_colors(tname)
@@ -134,7 +131,6 @@ def team_colors(tname)
     colorhash[team[:team_name]] = team[:colors]
   end
   t_color = colorhash[tname]
-  t_color
 end
 
 def team_names
@@ -155,7 +151,6 @@ def player_numbers(tname)
     end
   end
   outnum = player_num.map{|h| h[:number]}
-  outnum
 end
 
 def player_stats(name)
@@ -168,7 +163,7 @@ def player_stats(name)
   # use .find to look for the matching name and return the hash with the play_name as the first hash key/value pair
   new_hash = stat.find {|x| x[:player_name] == name}
   # remove the first pair at the front and the rest of the hashes are returned. 
-  namex = new_hash.shift
+  new_hash.shift
   new_hash
 end
 
@@ -177,7 +172,6 @@ def big_shoe_rebounds
   # call build_hash to get all players and their rebounds build_hash(:rebounds)
   # look for the matching player in the hash and get the value 
   maxpt = build_hash(:rebounds)[most_stat(:shoe)]
-  maxpt
 end
 
 def most_stat(type)
@@ -188,13 +182,11 @@ def most_stat(type)
   result = arr.max{|h,k| h[1] <=> k[1]}
   # return the name in index 0
   maxplayer = result[0]
-  maxplayer
 end
 
 def most_points_scored
   # call most_stat to return most points player
   the_player = most_stat(:points)
-  the_player
 end
 
 def winning_team 
@@ -212,7 +204,6 @@ def winning_team
   # use .max to get the array entry where index 1 has the highest value
   resultx = teams.max{|h,k| h[1] <=> k[1]}
   maxteam = resultx[0]
-  maxteam
 end
 
 def player_with_longest_name
@@ -227,20 +218,14 @@ def player_with_longest_name
   end
   # use .max_by to find the max length of each array entry
   maxname = names.max_by {|a| a.length}
-  maxname
 end
 
 def most_steals
   # call most_stat to return most steals player
   the_player = most_stat(:steals)
-  the_player
 end
 
 def long_name_steals_a_ton?
   # call most_steals to find the name to compare to the name retrun by player_with_longest_name
-  if most_steals = player_with_longest_name
-    return true 
-  else
-    return false
-  end 
+  most_steals == player_with_longest_name
 end
