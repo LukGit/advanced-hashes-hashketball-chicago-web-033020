@@ -107,20 +107,17 @@ end
 def build_playerhash_array
   # this helper function is to build an array conntaning hashes of every player and his stats
   playerhash = []
-  hashx = game_hash
-  hashx.each do |h_w, team|
+  game_hash.each do |h_w, team|
     playerhash.concat(team[:players])
   end
   playerhash
 end
 
 def build_hash(type)
-  player_ah = []
-  # call build_playerhash_array to get array of all players and stat hashes
-  player_ah = build_playerhash_array
+  # Use build_playerhash_array to get array of all players and stat hashes
   # take each player hash in the array and convert it into a hash with player name as the key and the stat type specified by the incoming parm as the value. The entire hash is them return to caller for examination
   # {"name1" => stat, "name2" => stat....}
-  pt_hash = player_ah.to_h {|k| [k[:player_name], k[type]]}
+  pt_hash = build_playerhash_array.to_h {|k| [k[:player_name], k[type]]}
 end
 
 def num_points_scored(name)
@@ -143,21 +140,17 @@ def team_colors(tname)
   # end
   # t_color = colorhash[tname]
   
-  # First look for the matching team name in each team hash. When found, use flat_map to extract the team color array entries into a new array 
-  t_color = []
-  hash3 = game_hash
-  hash3.each do |h_w, team|
+  # First look for the matching team name in each team hash. When found, return the color array
+  game_hash.each do |h_w, team|
     if team[:team_name] == tname
-      t_color = team[:colors].flat_map
+      return team[:colors]
     end
   end
-  t_color
 end
 
 def team_names
   name_ar = []
-  hash3 = game_hash
-  hash3.each do |h_w, team|
+  game_hash.each do |h_w, team|
     name_ar << team[:team_name]
   end
   name_ar
@@ -165,10 +158,9 @@ end
 
 def player_numbers(tname)
   player_num = []
-  hash2 = game_hash
-  hash2.each do |h_w, team|
+  game_hash.each do |h_w, team|
     if team[:team_name] == tname
-      # should I use flat_map to "build" the array from the players array instea of doing an assignment?
+      # should I use flat_map to "build" the array from the players array instead of doing an assignment?
       # player_num = team[:players]
       player_num = team[:players].flat_map
     end
@@ -178,11 +170,9 @@ def player_numbers(tname)
 end
 
 def player_stats(name)
-  stat = []
-  # call build_playerhash_array to get array of all players and stat hashes
-  stat = build_playerhash_array
+  # Use build_playerhash_array to get array of all players and stat hashes
   # use .find to look for the matching name and return the hash with the play_name as the first hash key/value pair
-  new_hash = stat.find {|x| x[:player_name] == name}
+  new_hash = build_playerhash_array.find {|x| x[:player_name] == name}
   # remove the first pair (player_name) at the front and the rest of the hashes are returned. 
   new_hash.shift
   new_hash
@@ -213,10 +203,9 @@ end
 
 def winning_team 
  teams = []
-  hash5 = game_hash
   # build a teams array in this format so .max can be used to find the team with most points -
   #[[team_name, total_points], [team_name, total_points]....]
-  hash5.each do |h_w, team|
+  game_hash.each do |h_w, team|
     tot = 0
     record = []
     record << team[:team_name]
@@ -232,12 +221,10 @@ def winning_team
 end
 
 def player_with_longest_name
-  stat1 = []
   names = []
-  # call build_playerhash_array to get array of all players and stat hashes
-  stat1 = build_playerhash_array
+  # Use build_playerhash_array to get array of all players and stat hashes
   # Use .map to extract the player_name into a new array of only names
-  names = stat1.map{|h| h[:player_name]}
+  names = build_playerhash_array.map{|h| h[:player_name]}
   # use .max_by to find the max length of each array entry
   maxname = names.max_by {|a| a.length}
 end
