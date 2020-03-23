@@ -105,7 +105,7 @@ def game_hash
 end
 
 def build_playerhash_array
-  # this is to build an array conntaning hashes of every player and his stats
+  # this helper function is to build an array conntaning hashes of every player and his stats
   playerhash = []
   hashx = game_hash
   hashx.each do |h_w, team|
