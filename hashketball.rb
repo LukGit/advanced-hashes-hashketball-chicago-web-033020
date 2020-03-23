@@ -110,27 +110,40 @@ def build_hash(type)
   hash1.each do |h_w, team|
     player_ah.concat(team[:players])
   end
-  # take each player hash in the array and convert it into a hash with player name as the key and the incoming type as the value. The entire hash is them return to caller for examination
+  # take each player hash in the array and convert it into a hash with player name as the key and the stat type specified by the incoming parm as the value. The entire hash is them return to caller for examination
+  # {"name1" => stat, "name2" => stat....}
   pt_hash = player_ah.to_h {|k| [k[:player_name], k[type]]}
 end
 
 def num_points_scored(name)
-  # call player_stats to get the stat of the player. Then find the stat type (points)
+  # call player_stats to get the stat hash of the player. Then find the stat type (points)
   point_s = player_stats(name)[:points]
 end
 
 def shoe_size(name)
-  # call player_stats to get the stat of the player. Then find the stat type (shoe)
+  # call player_stats to get the stat hash of the player. Then find the stat type (shoe)
   ssize = player_stats(name)[:shoe]
 end
 
 def team_colors(tname)
-  colorhash = {}
+  # This code option builds a hash with team name as the key and the color array as the value. Then use it as for lookup for the incoming name
+  # {team_name => [colors...], team_name => [colors...]}
+  # colorhash = {}
+  # hash3 = game_hash
+  # hash3.each do |h_w, team|
+  #   colorhash[team[:team_name]] = team[:colors]
+  # end
+  # t_color = colorhash[tname]
+  
+  # First look for the matching team name in each team hash. When found, use flat_map to extract the team color array entries into a new array 
+  t_color = []
   hash3 = game_hash
   hash3.each do |h_w, team|
-    colorhash[team[:team_name]] = team[:colors]
+    if team[:team_name] == tname
+      t_color = team[:colors].flat_map
+    end
   end
-  t_color = colorhash[tname]
+  t_color
 end
 
 def team_names
@@ -147,9 +160,12 @@ def player_numbers(tname)
   hash2 = game_hash
   hash2.each do |h_w, team|
     if team[:team_name] == tname
-      player_num = team[:players]
+      # should I use flat_map to "build" the array from the players array instea of doing an assignment?
+      # player_num = team[:players]
+      player_num = team[:players].flat_map
     end
   end
+  # Use .map to take each value in the number key to put into new array
   outnum = player_num.map{|h| h[:number]}
 end
 
@@ -162,7 +178,7 @@ def player_stats(name)
   end
   # use .find to look for the matching name and return the hash with the play_name as the first hash key/value pair
   new_hash = stat.find {|x| x[:player_name] == name}
-  # remove the first pair at the front and the rest of the hashes are returned. 
+  # remove the first pair (player_name) at the front and the rest of the hashes are returned. 
   new_hash.shift
   new_hash
 end
@@ -177,6 +193,7 @@ end
 def most_stat(type)
   # return name of player with the most of any stat type from calling method. This calls the build_hash method to get the player_name as the key and the stat as the value
   # then convert the hash into array 
+  # e.g [[name, points], [name, points]....]
   arr = build_hash(type).to_a
   # use .max to compare the value at index 1, which is the stat value
   result = arr.max{|h,k| h[1] <=> k[1]}
@@ -192,6 +209,8 @@ end
 def winning_team 
  teams = []
   hash5 = game_hash
+  # build a teams array in this format so .max can be used to find the team with most points -
+  #[[team_name, total_points], [team_name, total_points]....]
   hash5.each do |h_w, team|
     tot = 0
     record = []
@@ -203,19 +222,20 @@ def winning_team
   end
   # use .max to get the array entry where index 1 has the highest value
   resultx = teams.max{|h,k| h[1] <=> k[1]}
-  maxteam = resultx[0]
+  # return team name in index 0
+  resultx[0]
 end
 
 def player_with_longest_name
- names = []
+  stat1 = []
+  names = []
   hash5 = game_hash
+  # combine teams into one array of hashes
   hash5.each do |h_w, team|
-    i = 0 
-    while i < team[:players].size do
-      names << team[:players][i][:player_name]
-      i += 1
-    end
-  end
+    stat1.concat(team[:players])
+  end 
+  # Use .map to extract the player_name into a new array of only names
+  names = stat1.map{|h| h[:player_name]}
   # use .max_by to find the max length of each array entry
   maxname = names.max_by {|a| a.length}
 end
