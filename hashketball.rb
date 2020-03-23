@@ -104,12 +104,20 @@ def game_hash
   hash
 end
 
+def build_playerhash_array
+  # this is to build an array conntaning hashes of every player and his stats
+  playerhash = []
+  hashx = game_hash
+  hashx.each do |h_w, team|
+    playerhash.concat(team[:players])
+  end
+  playerhash
+end
+
 def build_hash(type)
   player_ah = []
-  hash1 = game_hash
-  hash1.each do |h_w, team|
-    player_ah.concat(team[:players])
-  end
+  # call build_playerhash_array to get array of all players and stat hashes
+  player_ah = build_playerhash_array
   # take each player hash in the array and convert it into a hash with player name as the key and the stat type specified by the incoming parm as the value. The entire hash is them return to caller for examination
   # {"name1" => stat, "name2" => stat....}
   pt_hash = player_ah.to_h {|k| [k[:player_name], k[type]]}
@@ -171,11 +179,8 @@ end
 
 def player_stats(name)
   stat = []
-  s_hash = {}
-  hash4 = game_hash
-  hash4.each do |h_w, team|
-    stat.concat(team[:players])
-  end
+  # call build_playerhash_array to get array of all players and stat hashes
+  stat = build_playerhash_array
   # use .find to look for the matching name and return the hash with the play_name as the first hash key/value pair
   new_hash = stat.find {|x| x[:player_name] == name}
   # remove the first pair (player_name) at the front and the rest of the hashes are returned. 
@@ -229,11 +234,8 @@ end
 def player_with_longest_name
   stat1 = []
   names = []
-  hash5 = game_hash
-  # combine teams into one array of hashes
-  hash5.each do |h_w, team|
-    stat1.concat(team[:players])
-  end 
+  # call build_playerhash_array to get array of all players and stat hashes
+  stat1 = build_playerhash_array
   # Use .map to extract the player_name into a new array of only names
   names = stat1.map{|h| h[:player_name]}
   # use .max_by to find the max length of each array entry
