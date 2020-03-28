@@ -193,7 +193,7 @@ def most_stat(type)
   # use .max to compare the value at index 1, which is the stat value
   result = arr.max{|h,k| h[1] <=> k[1]}
   # return the name in index 0
-  maxplayer = result[0]
+  result[0]
 end
 
 def most_points_scored
