@@ -226,7 +226,7 @@ def player_with_longest_name
   # Use .map to extract the player_name into a new array of only names
   names = build_playerhash_array.map{|h| h[:player_name]}
   # use .max_by to find the max length of each array entry
-  maxname = names.max_by {|a| a.length}
+  names.max_by {|a| a.length}
 end
 
 def most_steals
