@@ -122,7 +122,7 @@ end
 
 def num_points_scored(name)
   # call player_stats to get the stat hash of the player. Then find the stat type (points)
-  point_s = player_stats(name)[:points]
+  player_stats(name)[:points]
 end
 
 def shoe_size(name)
