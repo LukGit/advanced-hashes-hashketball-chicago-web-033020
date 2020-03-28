@@ -231,7 +231,7 @@ end
 
 def most_steals
   # call most_stat to return most steals player
-  the_player = most_stat(:steals)
+  most_stat(:steals)
 end
 
 def long_name_steals_a_ton?
