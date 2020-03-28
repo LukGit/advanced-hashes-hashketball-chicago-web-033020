@@ -166,7 +166,7 @@ def player_numbers(tname)
     end
   end
   # Use .map to take each value in the number key to put into new array
-  outnum = player_num.map{|h| h[:number]}
+  player_num.map{|h| h[:number]}
 end
 
 def player_stats(name)
