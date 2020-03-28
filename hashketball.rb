@@ -182,7 +182,7 @@ def big_shoe_rebounds
   # call most_stat to get the player name with the biggest shoe size most_stat(:shoe)
   # call build_hash to get all players and their rebounds build_hash(:rebounds)
   # look for the matching player in the hash and get the value 
-  maxpt = build_hash(:rebounds)[most_stat(:shoe)]
+  build_hash(:rebounds)[most_stat(:shoe)]
 end
 
 def most_stat(type)
