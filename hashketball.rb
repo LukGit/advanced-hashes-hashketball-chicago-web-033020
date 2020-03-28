@@ -198,7 +198,7 @@ end
 
 def most_points_scored
   # call most_stat to return most points player
-  the_player = most_stat(:points)
+  most_stat(:points)
 end
 
 def winning_team 
