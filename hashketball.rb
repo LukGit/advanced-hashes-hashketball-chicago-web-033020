@@ -127,7 +127,7 @@ end
 
 def shoe_size(name)
   # call player_stats to get the stat hash of the player. Then find the stat type (shoe)
-  ssize = player_stats(name)[:shoe]
+  player_stats(name)[:shoe]
 end
 
 def team_colors(tname)
