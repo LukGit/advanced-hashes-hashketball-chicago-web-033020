@@ -117,17 +117,17 @@ def build_hash(type)
   # Use build_playerhash_array to get array of all players and stat hashes
   # take each player hash in the array and convert it into a hash with player name as the key and the stat type specified by the incoming parm as the value. The entire hash is them return to caller for examination
   # {"name1" => stat, "name2" => stat....}
-  pt_hash = build_playerhash_array.to_h {|k| [k[:player_name], k[type]]}
+  build_playerhash_array.to_h {|k| [k[:player_name], k[type]]}
 end
 
 def num_points_scored(name)
   # call player_stats to get the stat hash of the player. Then find the stat type (points)
-  point_s = player_stats(name)[:points]
+  player_stats(name)[:points]
 end
 
 def shoe_size(name)
   # call player_stats to get the stat hash of the player. Then find the stat type (shoe)
-  ssize = player_stats(name)[:shoe]
+  player_stats(name)[:shoe]
 end
 
 def team_colors(tname)
@@ -166,7 +166,7 @@ def player_numbers(tname)
     end
   end
   # Use .map to take each value in the number key to put into new array
-  outnum = player_num.map{|h| h[:number]}
+  player_num.map{|h| h[:number]}
 end
 
 def player_stats(name)
@@ -182,7 +182,7 @@ def big_shoe_rebounds
   # call most_stat to get the player name with the biggest shoe size most_stat(:shoe)
   # call build_hash to get all players and their rebounds build_hash(:rebounds)
   # look for the matching player in the hash and get the value 
-  maxpt = build_hash(:rebounds)[most_stat(:shoe)]
+  build_hash(:rebounds)[most_stat(:shoe)]
 end
 
 def most_stat(type)
@@ -193,12 +193,12 @@ def most_stat(type)
   # use .max to compare the value at index 1, which is the stat value
   result = arr.max{|h,k| h[1] <=> k[1]}
   # return the name in index 0
-  maxplayer = result[0]
+  result[0]
 end
 
 def most_points_scored
   # call most_stat to return most points player
-  the_player = most_stat(:points)
+  most_stat(:points)
 end
 
 def winning_team 
@@ -226,12 +226,12 @@ def player_with_longest_name
   # Use .map to extract the player_name into a new array of only names
   names = build_playerhash_array.map{|h| h[:player_name]}
   # use .max_by to find the max length of each array entry
-  maxname = names.max_by {|a| a.length}
+  names.max_by {|a| a.length}
 end
 
 def most_steals
   # call most_stat to return most steals player
-  the_player = most_stat(:steals)
+  most_stat(:steals)
 end
 
 def long_name_steals_a_ton?
