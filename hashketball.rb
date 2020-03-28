@@ -117,7 +117,7 @@ def build_hash(type)
   # Use build_playerhash_array to get array of all players and stat hashes
   # take each player hash in the array and convert it into a hash with player name as the key and the stat type specified by the incoming parm as the value. The entire hash is them return to caller for examination
   # {"name1" => stat, "name2" => stat....}
-  pt_hash = build_playerhash_array.to_h {|k| [k[:player_name], k[type]]}
+  build_playerhash_array.to_h {|k| [k[:player_name], k[type]]}
 end
 
 def num_points_scored(name)
